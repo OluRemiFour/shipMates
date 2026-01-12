@@ -1,4 +1,3 @@
-// [build] library: 'shadcn'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
 import { Button } from "../components/ui/button";
+import { fn } from '@storybook/test';
 
 const meta = {
   title: "ui/AlertDialog",
@@ -22,8 +22,8 @@ const meta = {
 export default meta;
 
 export const Base = {
-  render: () => (
-    <AlertDialog>
+  render: (args) => (
+    <AlertDialog {...args}>
       <AlertDialogTrigger asChild>
         <Button variant="outline">Open</Button>
       </AlertDialogTrigger>
@@ -42,5 +42,7 @@ export const Base = {
       </AlertDialogContent>
     </AlertDialog>
   ),
-  args: {},
+  args: {
+    onOpenChange: fn(),
+  },
 };
