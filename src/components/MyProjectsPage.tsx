@@ -29,7 +29,7 @@ interface ProjectItem {
   roles: Role[];
   applicants: number;
   views: number;
-  createdAt: string;
+  createdAt: Date; // Changed from string to Date object
   techStack: string[];
 }
 
@@ -42,7 +42,7 @@ const mockProjects: ProjectItem[] = [
     roles: ['backend', 'fullstack'],
     applicants: 12,
     views: 234,
-    createdAt: '2024-01-15',
+    createdAt: new Date('2024-01-15T00:00:00Z'), // Stored as Date object
     techStack: ['Python', 'FastAPI', 'React', 'PostgreSQL'],
   },
   {
@@ -53,7 +53,7 @@ const mockProjects: ProjectItem[] = [
     roles: ['frontend', 'designer'],
     applicants: 8,
     views: 156,
-    createdAt: '2024-01-20',
+    createdAt: new Date('2024-01-20T00:00:00Z'), // Stored as Date object
     techStack: ['React', 'WebGL', 'Node.js', 'Redis'],
   },
   {
@@ -64,7 +64,7 @@ const mockProjects: ProjectItem[] = [
     roles: ['mobile', 'fullstack'],
     applicants: 0,
     views: 0,
-    createdAt: '2024-01-25',
+    createdAt: new Date('2024-01-25T00:00:00Z'), // Stored as Date object
     techStack: ['React Native', 'Firebase', 'GraphQL'],
   },
 ];
@@ -207,7 +207,14 @@ export function MyProjectsPage() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400 font-mono">
                   <Clock className="w-4 h-4" />
-                  <span>{project.createdAt}</span>
+                  {/* Display formatted date from Date object */}
+                  <span>
+                    {project.createdAt.toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </span>
                 </div>
                 
                 <div className="ml-auto">

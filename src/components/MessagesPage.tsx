@@ -104,9 +104,9 @@ const mockMessages: Message[] = [
 ];
 
 export function MessagesPage() {
-  const [conversations] = useState<Conversation[]>(mockConversations);
+  const [conversations, setConversations] = useState<Conversation[]>(mockConversations);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(mockConversations[0]);
-  const [messages] = useState<Message[]>(mockMessages);
+  const [messages, setMessages] = useState<Message[]>(mockMessages);
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -116,8 +116,36 @@ export function MessagesPage() {
   );
 
   const handleSend = () => {
-    if (!newMessage.trim()) return;
-    // In a real app, this would send the message
+    if (!newMessage.trim() || !selectedConversation) return;
+
+    const now = new Date();
+    const newMsg: Message = {
+      id: String(messages.length + 1), // Simple ID generation for mock
+      text: newMessage,
+      sender: 'me',
+      timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages((prevMessages) => [...prevMessages, newMsg]);
+
+    // Update the selected conversation's last message and timestamp
+    const updatedConversation = {
+      ...selectedConversation,
+      lastMessage: newMessage,
+      timestamp: 'Just now', // For demonstration, a real app would format this
+      unread: 0, // Assuming sending a message clears unread count for 'me'
+    };
+
+    // Update the conversations list
+    setConversations((prevConversations) =>
+      prevConversations.map((conv) =>
+        conv.id === updatedConversation.id ? updatedConversation : conv
+      )
+    );
+
+    // Also update the selectedConversation state to reflect the changes immediately
+    setSelectedConversation(updatedConversation);
+
     setNewMessage('');
   };
 
